@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Si Tamu Yonasindo</title>
+<link rel="icon" href="logo.png">
+<style>
+:root{--g1:#055a05;--g2:#0e8a2e;--g3:#3ecf6a;--bg:#f2fbf4;--tx:#0f2a16;--mut:#5b7562;--card:rgba(255,255,255,.82);--r:18px}
+*{box-sizing:border-box;margin:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;color:var(--tx);min-height:100vh;display:flex;flex-direction:column;background:linear-gradient(160deg,#e6f7ea 0%,#fff 45%,#d4f1dc 100%);overflow-x:hidden}
+.bg{position:fixed;inset:0;z-index:-1;perspective:700px;pointer-events:none}
+.bg i{position:absolute;width:90px;height:90px;border-radius:20px;background:linear-gradient(135deg,var(--g3),var(--g1));opacity:.16;animation:fl 14s linear infinite}
+.bg i:nth-child(1){left:6%;top:15%}.bg i:nth-child(2){left:82%;top:10%;width:60px;height:60px;animation-duration:10s}
+.bg i:nth-child(3){left:70%;top:68%;width:130px;height:130px;animation-duration:18s}.bg i:nth-child(4){left:12%;top:72%;width:70px;height:70px;animation-duration:12s}
+.bg i:nth-child(5){left:45%;top:5%;width:45px;height:45px;animation-duration:9s}
+@keyframes fl{0%{transform:rotateX(0) rotateY(0) translateY(0)}50%{transform:rotateX(180deg) rotateY(180deg) translateY(-40px)}100%{transform:rotateX(360deg) rotateY(360deg) translateY(0)}}
+nav{display:flex;align-items:center;gap:12px;padding:10px 22px;background:var(--card);backdrop-filter:blur(10px);position:sticky;top:0;z-index:5;box-shadow:0 4px 20px #0a5a1a22}
+nav img{height:42px;border-radius:6px}nav b{font-size:1.15rem;color:var(--g1);line-height:1.1}nav small{display:block;color:var(--mut);font-size:.7rem}
+nav .sp{flex:1}
+.tab{border:0;background:none;padding:9px 16px;border-radius:30px;cursor:pointer;font-weight:600;color:var(--g1);transition:.25s}
+.tab.on,.tab:hover{background:linear-gradient(135deg,var(--g2),var(--g1));color:#fff;box-shadow:0 6px 16px #0e8a2e55}
+main{flex:1;width:100%;max-width:1150px;margin:0 auto;padding:26px 16px}
+.view{display:none;animation:in .5s}.view.on{display:block}
+@keyframes in{from{opacity:0;transform:translateY(20px) rotateX(8deg)}to{opacity:1;transform:none}}
+.card{background:var(--card);backdrop-filter:blur(12px);border-radius:var(--r);padding:24px;box-shadow:0 12px 40px #0a5a1a22;border:1px solid #fff;transition:transform .15s;transform-style:preserve-3d;will-change:transform}
+h2{color:var(--g1);margin-bottom:4px}p.s{color:var(--mut);margin-bottom:18px;font-size:.92rem}
+.hero{text-align:center;margin-bottom:22px;perspective:800px}.hero img{height:90px;animation:spin 7s ease-in-out infinite;filter:drop-shadow(0 12px 14px #0a5a1a55)}
+@keyframes spin{0%,100%{transform:rotateY(-25deg)}50%{transform:rotateY(25deg)}}
+.hero h1{font-size:2rem;background:linear-gradient(90deg,var(--g1),var(--g3));-webkit-background-clip:text;color:transparent;margin-top:8px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+label{font-size:.8rem;font-weight:600;color:var(--g1);display:block;margin-bottom:4px}
+input,select{width:100%;padding:11px 13px;border:2px solid #cfe8d5;border-radius:12px;font:inherit;background:#fff;transition:.2s}
+input:focus,select:focus{outline:0;border-color:var(--g2);box-shadow:0 0 0 4px #3ecf6a33}
+.btn{border:0;cursor:pointer;padding:12px 22px;border-radius:12px;font:inherit;font-weight:700;color:#fff;background:linear-gradient(135deg,var(--g2),var(--g1));box-shadow:0 8px 20px #0e8a2e55;transition:.2s}
+.btn:hover{transform:translateY(-2px) scale(1.02)}.btn.r{background:linear-gradient(135deg,#e5484d,#a8171c);box-shadow:none;padding:6px 10px;font-size:.78rem}.btn.o{background:#fff;color:var(--g1);border:2px solid var(--g2);box-shadow:none}.btn.sm{padding:6px 10px;font-size:.78rem}
+.full{grid-column:1/-1}
+.login{max-width:390px;margin:40px auto;text-align:center}.login .grid{grid-template-columns:1fr;text-align:left;margin:16px 0}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-bottom:16px}
+.st{color:#fff;background:linear-gradient(135deg,var(--g2),var(--g1));border-radius:var(--r);padding:18px;box-shadow:0 12px 28px #0e8a2e44}.st:nth-child(even){background:linear-gradient(135deg,#3ecf6a,#0e8a2e)}
+.st b{font-size:2rem;display:block}.st span{font-size:.82rem;opacity:.9}
+.charts{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;margin-bottom:16px}
+.bars{display:flex;align-items:flex-end;gap:8px;height:150px;margin-top:12px}.bars div{flex:1;text-align:center;font-size:.7rem;color:var(--mut);display:flex;flex-direction:column;justify-content:flex-end;height:100%}
+.bars u{display:block;border-radius:8px 8px 0 0;background:linear-gradient(180deg,var(--g3),var(--g1));text-decoration:none;color:#fff;font-weight:700;min-height:4px;transform-origin:bottom;animation:gr .8s both}@keyframes gr{from{transform:scaleY(0)}}
+.bar{display:flex;gap:10px;flex-wrap:wrap;align-items:end;margin-bottom:14px}.bar>div{flex:1;min-width:150px}
+.tw{overflow-x:auto;border-radius:12px}table{border-collapse:collapse;width:100%;font-size:.85rem;background:#fff}
+th{background:var(--g1);color:#fff;padding:10px;text-align:left;white-space:nowrap;position:sticky;top:0}td{padding:9px 10px;border-bottom:1px solid #e3f1e6}tr:hover td{background:#effaf1}
+.in{color:#b45309;font-weight:600}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--g1);color:#fff;padding:13px 24px;border-radius:30px;transition:.4s;z-index:20;box-shadow:0 10px 30px #0006}#toast.on{transform:translateX(-50%)}#toast.err{background:#a8171c}
+footer{text-align:center;padding:18px;background:linear-gradient(135deg,var(--g1),var(--g2));color:#fff;font-size:.85rem}
+#ld{position:fixed;inset:0;z-index:50;background:linear-gradient(160deg,#fff,#d4f1dc);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;transition:opacity .5s;perspective:600px}
+#ld.off{opacity:0;pointer-events:none}
+.cube{width:70px;height:70px;position:relative;transform-style:preserve-3d;animation:cb 2.4s linear infinite}
+.cube i{position:absolute;inset:0;border:3px solid #fff;background:linear-gradient(135deg,var(--g3),var(--g1));opacity:.9;border-radius:8px}
+.cube i:nth-child(1){transform:translateZ(35px)}.cube i:nth-child(2){transform:rotateY(180deg) translateZ(35px)}.cube i:nth-child(3){transform:rotateY(90deg) translateZ(35px)}
+.cube i:nth-child(4){transform:rotateY(-90deg) translateZ(35px)}.cube i:nth-child(5){transform:rotateX(90deg) translateZ(35px)}.cube i:nth-child(6){transform:rotateX(-90deg) translateZ(35px)}
+@keyframes cb{to{transform:rotateX(360deg) rotateY(720deg)}}
+.pb{width:200px;height:6px;border-radius:6px;background:#cfe8d5;overflow:hidden}.pb i{display:block;height:100%;width:40%;background:var(--g2);border-radius:6px;animation:pb 1.2s ease-in-out infinite}@keyframes pb{from{margin-left:-40%}to{margin-left:100%}}
+#ld b{color:var(--g1);letter-spacing:2px}
+</style>
+</head>
+<body>
+<div class="bg"><i></i><i></i><i></i><i></i><i></i></div>
+
+<div id="ld"><div class="cube"><i></i><i></i><i></i><i></i><i></i><i></i></div><b>MEMUAT...</b><div class="pb"><i></i></div></div>
+
+<nav>
+  <img src="logo.png" alt="YIP"><div><b>Si Tamu Yonasindo</b><small>PT. Yonasindo Intra Pratama</small></div><span class="sp"></span>
+  <button class="tab on" data-v="tamu">Buku Tamu</button><button class="tab" data-v="admin">Admin</button>
+</nav>
+
+<main>
+<!-- HALAMAN TAMU -->
+<section class="view on" id="v-tamu">
+  <div class="hero"><img src="logo.png" alt=""><h1>Selamat Datang</h1><p class="s">Silakan isi buku tamu PT. Yonasindo Intra Pratama</p></div>
+  <form class="card tilt" id="f" onsubmit="kirim(event)"><div class="grid">
+    <div><label>Tanggal</label><input type="date" id="tanggal" required></div>
+    <div><label>Nama</label><input id="nama" required placeholder="Nama lengkap"></div>
+    <div><label>Instansi / Asal</label><input id="instansi" required placeholder="Perusahaan / instansi"></div>
+    <div><label>Keperluan / Tujuan</label><input id="keperluan" required placeholder="Bertemu siapa / untuk apa"></div>
+    <div><label>Barang Bawaan</label><select id="bjenis"><option>Tidak Ada</option><option>Masuk</option><option>Keluar</option></select></div>
+    <div><label>Keterangan Barang</label><input id="bket" placeholder="Contoh: laptop, paket"></div>
+    <div><label>Jam Masuk</label><input type="time" id="masuk" required></div>
+    <div><label>Jam Keluar (boleh dikosongkan)</label><input type="time" id="keluar"></div>
+    <div><label>Nomor Handphone</label><input type="tel" id="hp" required placeholder="08xxxxxxxxxx"></div>
+    <div><label>Nomor Identitas (KTP/SIM)</label><input id="identitas" required placeholder="Nomor identitas"></div>
+    <div class="full"><button class="btn" style="width:100%">Kirim Data Kunjungan</button></div>
+  </div></form>
+</section>
+
+<!-- HALAMAN ADMIN -->
+<section class="view" id="v-admin">
+  <div id="login" class="card login tilt"><img src="logo.png" height="60" alt=""><h2>Login Admin</h2><p class="s">Khusus petugas resepsionis / admin</p>
+    <form onsubmit="login(event)"><div class="grid"><div><label>Username</label><input id="u" required></div><div><label>Password</label><input id="p" type="password" required></div></div><button class="btn" style="width:100%">Masuk</button></form></div>
+
+  <div id="dash" style="display:none">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px"><div><h2>Dashboard Statistik</h2><p class="s" style="margin:0">Ringkasan kunjungan tamu</p></div>
+      <div><button class="btn o sm" onclick="muat()">⟳ Muat Ulang</button> <button class="btn r" onclick="logout()">Keluar</button></div></div>
+    <div class="stats">
+      <div class="st tilt"><b id="s1">0</b><span>Total Tamu</span></div><div class="st tilt"><b id="s2">0</b><span>Tamu Hari Ini</span></div>
+      <div class="st tilt"><b id="s3">0</b><span>Tamu Bulan Ini</span></div><div class="st tilt"><b id="s4">0</b><span>Masih di Dalam</span></div></div>
+    <div class="charts"><div class="card"><h2 style="font-size:1rem">7 Hari Terakhir</h2><div class="bars" id="c7"></div></div><div class="card"><h2 style="font-size:1rem">6 Bulan Terakhir</h2><div class="bars" id="c6"></div></div></div>
+    <div class="card">
+      <div class="bar">
+        <div><label>Tampilkan</label><select id="mode" onchange="modeUI()"><option value="all">Semua Data</option><option value="day">Per Hari</option><option value="month">Per Bulan</option></select></div>
+        <div id="fd" style="display:none"><label>Tanggal</label><input type="date" id="fday" onchange="render()"></div>
+        <div id="fm" style="display:none"><label>Bulan</label><input type="month" id="fmon" onchange="render()"></div>
+        <div><label>Cari</label><input id="q" placeholder="Nama / instansi..." oninput="render()"></div>
+      </div>
+      <p class="s" id="cnt"></p>
+      <div class="tw"><table><thead><tr><th>Tanggal</th><th>Nama</th><th>Instansi</th><th>Keperluan</th><th>Barang</th><th>Masuk</th><th>Keluar</th><th>HP</th><th>Identitas</th><th>Aksi</th></tr></thead><tbody id="tb"></tbody></table></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>Aplikasi Si Tamu Yonasindo ini dirancang dan dibuat oleh (Tim IT LPK YONASINDO)</footer>
+<div id="toast"></div>
+
+<script>
+const API='https://script.google.com/macros/s/AKfycbxJ92FmSiD_V2I1RYt54J3ODgZPDLI-6HKB1i7lSkOV0l5ve3kSR7EZQk6hT5QJp4Mh/exec'; // ganti setelah deploy
+const $=id=>document.getElementById(id);
+let DATA=[],TOKEN=sessionStorage.getItem('tk')||'';
+const pad=n=>String(n).padStart(2,'0');
+const today=()=>{const d=new Date();return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())};
+const nowT=()=>{const d=new Date();return pad(d.getHours())+':'+pad(d.getMinutes())};
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmt=t=>t?t.split('-').reverse().join('/'):'';
+function toast(m,err){const t=$('toast');t.textContent=m;t.className='on'+(err?' err':'');setTimeout(()=>t.className='',3000)}
+function loading(on){$('ld').classList.toggle('off',!on)}
+
+async function api(body){
+  loading(true);
+  try{
+    const r=await fetch(API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({...body,token:TOKEN})});
+    const j=await r.json();
+    if(j.auth===false)logout(true);
+    return j;
+  }catch(e){return{ok:false,msg:'Gagal terhubung ke server'}}
+  finally{setTimeout(()=>loading(false),350)}
+}
+
+/* navigasi */
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x===b));
+  document.querySelectorAll('.view').forEach(v=>v.classList.toggle('on',v.id==='v-'+b.dataset.v));
+  if(b.dataset.v==='admin'&&TOKEN)muat();
+});
+
+/* tamu */
+function resetForm(){$('f').reset();$('tanggal').value=today();$('masuk').value=nowT()}
+async function kirim(e){
+  e.preventDefault();
+  const j=await api({action:'add',tanggal:$('tanggal').value,nama:$('nama').value,instansi:$('instansi').value,keperluan:$('keperluan').value,
+    barang:$('bjenis').value==='Tidak Ada'?'Tidak Ada':$('bjenis').value+': '+($('bket').value||'-'),
+    masuk:$('masuk').value,keluar:$('keluar').value,hp:$('hp').value,identitas:$('identitas').value});
+  if(j.ok){toast('✔ Terima kasih, data kunjungan tersimpan');resetForm()}else toast(j.msg||'Gagal menyimpan',1);
+}
+
+/* admin */
+async function login(e){
+  e.preventDefault();
+  const j=await api({action:'login',user:$('u').value,pass:$('p').value});
+  if(j.ok){TOKEN=j.token;sessionStorage.setItem('tk',TOKEN);$('p').value='';muat()}else toast(j.msg||'Login gagal',1);
+}
+function logout(silent){TOKEN='';sessionStorage.removeItem('tk');$('dash').style.display='none';$('login').style.display='block';if(silent!==true)toast('Anda telah keluar')}
+async function muat(){
+  const j=await api({action:'list'});
+  if(!j.ok){if(j.auth!==false)toast(j.msg,1);return}
+  DATA=j.data;$('login').style.display='none';$('dash').style.display='block';stats();render();
+}
+function stats(){
+  const t=today(),m=t.slice(0,7);
+  $('s1').textContent=DATA.length;$('s2').textContent=DATA.filter(d=>d.tanggal===t).length;
+  $('s3').textContent=DATA.filter(d=>d.tanggal.startsWith(m)).length;$('s4').textContent=DATA.filter(d=>d.tanggal===t&&!d.keluar).length;
+  const d7=[],d6=[];
+  for(let i=6;i>=0;i--){const x=new Date();x.setDate(x.getDate()-i);const k=x.getFullYear()+'-'+pad(x.getMonth()+1)+'-'+pad(x.getDate());d7.push([pad(x.getDate())+'/'+pad(x.getMonth()+1),DATA.filter(d=>d.tanggal===k).length])}
+  for(let i=5;i>=0;i--){const x=new Date();x.setDate(1);x.setMonth(x.getMonth()-i);const k=x.getFullYear()+'-'+pad(x.getMonth()+1);d6.push([k.slice(5)+'/'+k.slice(2,4),DATA.filter(d=>d.tanggal.startsWith(k)).length])}
+  bars('c7',d7);bars('c6',d6);
+}
+function bars(id,a){const mx=Math.max(1,...a.map(x=>x[1]));$(id).innerHTML=a.map(x=>`<div><u style="height:${x[1]/mx*100}%">${x[1]||''}</u>${x[0]}</div>`).join('')}
+function modeUI(){const m=$('mode').value;$('fd').style.display=m==='day'?'block':'none';$('fm').style.display=m==='month'?'block':'none';
+  if(m==='day'&&!$('fday').value)$('fday').value=today();if(m==='month'&&!$('fmon').value)$('fmon').value=today().slice(0,7);render()}
+function render(){
+  const m=$('mode').value,q=$('q').value.toLowerCase();
+  const L=DATA.filter(d=>(m==='all'||(m==='day'?d.tanggal===$('fday').value:d.tanggal.startsWith($('fmon').value)))&&(!q||(d.nama+' '+d.instansi).toLowerCase().includes(q)));
+  $('cnt').textContent=L.length+' data ditampilkan';
+  $('tb').innerHTML=L.length?L.map(d=>`<tr><td>${fmt(d.tanggal)}</td><td><b>${esc(d.nama)}</b></td><td>${esc(d.instansi)}</td><td>${esc(d.keperluan)}</td><td>${esc(d.barang)}</td><td>${esc(d.masuk)}</td>
+  <td>${d.keluar?esc(d.keluar):`<span class="in">Di dalam</span> <button class="btn o sm" onclick="keluar('${esc(d.id)}')">Set keluar</button>`}</td><td>${esc(d.hp)}</td><td>${esc(d.identitas)}</td>
+  <td><button class="btn r" onclick="hapus('${esc(d.id)}')">Hapus</button></td></tr>`).join(''):'<tr><td colspan="10" style="text-align:center;padding:24px;color:#5b7562">Belum ada data</td></tr>';
+}
+async function hapus(id){if(!confirm('Hapus data tamu ini?'))return;const j=await api({action:'delete',id});if(j.ok){toast('Data dihapus');muat()}else toast(j.msg,1)}
+async function keluar(id){const j=await api({action:'keluar',id,jam:nowT()});if(j.ok){toast('Jam keluar dicatat');muat()}else toast(j.msg,1)}
+
+/* efek 3D tilt */
+document.addEventListener('mousemove',e=>{
+  document.querySelectorAll('.tilt').forEach(c=>{
+    const r=c.getBoundingClientRect();
+    if(e.clientX<r.left-60||e.clientX>r.right+60||e.clientY<r.top-60||e.clientY>r.bottom+60){c.style.transform='';return}
+    const x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
+    c.style.transform=`perspective(900px) rotateY(${x*6}deg) rotateX(${-y*6}deg)`;
+  });
+});
+
+resetForm();
+if(TOKEN){/* sesi lama akan dimuat saat tab Admin dibuka */}
+window.addEventListener('load',()=>setTimeout(()=>loading(false),1200));
+</script>
+</body>
+</html>
