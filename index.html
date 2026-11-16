@@ -2,7 +2,8 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#055a05">
 <title>Si Tamu Yonasindo</title>
 <link rel="icon" href="logo.png">
 <style>
@@ -57,6 +58,24 @@ footer{text-align:center;padding:18px;background:linear-gradient(135deg,var(--g1
 @keyframes cb{to{transform:rotateX(360deg) rotateY(720deg)}}
 .pb{width:200px;height:6px;border-radius:6px;background:#cfe8d5;overflow:hidden}.pb i{display:block;height:100%;width:40%;background:var(--g2);border-radius:6px;animation:pb 1.2s ease-in-out infinite}@keyframes pb{from{margin-left:-40%}to{margin-left:100%}}
 #ld b{color:var(--g1);letter-spacing:2px}
+#toast{max-width:92%;text-align:center}
+#bk{position:fixed;inset:0;z-index:30;background:#05300ccc;display:none;align-items:center;justify-content:center;padding:16px;overflow:auto;perspective:900px}#bk.on{display:flex}
+.tk{background:#fff;border-radius:22px;max-width:400px;width:100%;overflow:hidden;box-shadow:0 30px 70px #0008;animation:pop .6s cubic-bezier(.2,1.4,.4,1)}@keyframes pop{from{transform:rotateX(60deg) scale(.7);opacity:0}}
+.tk .hd{background:linear-gradient(135deg,var(--g2),var(--g1));color:#fff;text-align:center;padding:20px}
+.ck{width:64px;height:64px;border-radius:50%;background:#fff;color:var(--g2);font-size:2.2rem;display:grid;place-items:center;margin:0 auto 8px;animation:pl 1.6s infinite}@keyframes pl{50%{box-shadow:0 0 0 12px #ffffff33}}
+.tk .bd{padding:16px 20px}.rw{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px dashed #cfe8d5;font-size:.9rem}.rw span{color:var(--mut)}.rw b{text-align:right}
+.kode{font:700 1.8rem monospace;letter-spacing:5px;text-align:center;color:var(--g1);margin-top:4px}.lv{text-align:center;font:600 .85rem monospace;color:#b45309;margin-bottom:8px}
+@media(hover:none){.tilt{transform:none!important}}
+@media(max-width:700px){
+nav{padding:8px 12px;gap:8px;flex-wrap:wrap}nav img{height:34px}nav b{font-size:1rem}nav small{display:none}nav>div{flex:1 1 calc(100% - 50px)}.sp{display:none}.tab{flex:1 1 45%;padding:10px}
+main{padding:16px 12px}.card{padding:16px}.hero h1{font-size:1.5rem}.hero img{height:70px}
+input,select{font-size:16px;padding:13px}.btn{padding:14px 20px}.btn.sm,.btn.r{padding:8px 12px}
+.stats{grid-template-columns:1fr 1fr}.st{padding:14px}.st b{font-size:1.6rem}.charts{grid-template-columns:1fr}.bar>div{min-width:100%}
+.tw{overflow:visible}table,tbody,tr,td{display:block;width:100%}thead{display:none}
+tr{background:#fff;border:1px solid #d6ecdb;border-radius:14px;margin-bottom:12px;padding:8px 12px;box-shadow:0 4px 12px #0a5a1a14}
+td{border:0;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:6px 0;text-align:right}td::before{content:attr(data-l);font-weight:700;color:var(--g1);text-align:left;flex-shrink:0}tr:hover td{background:none}
+}
+.pw{position:relative}.pw input{padding-right:50px}.pw button{position:absolute;right:4px;top:50%;transform:translateY(-50%);border:0;background:none;font-size:1.3rem;cursor:pointer;padding:8px 10px}
 </style>
 </head>
 <body>
@@ -83,7 +102,6 @@ footer{text-align:center;padding:18px;background:linear-gradient(135deg,var(--g1
     <div><label>Jam Masuk</label><input type="time" id="masuk" required></div>
     <div><label>Jam Keluar (boleh dikosongkan)</label><input type="time" id="keluar"></div>
     <div><label>Nomor Handphone</label><input type="tel" id="hp" required placeholder="08xxxxxxxxxx"></div>
-    <div><label>Nomor Identitas (KTP/SIM)</label><input id="identitas" required placeholder="Nomor identitas"></div>
     <div class="full"><button class="btn" style="width:100%">Kirim Data Kunjungan</button></div>
   </div></form>
 </section>
@@ -91,7 +109,7 @@ footer{text-align:center;padding:18px;background:linear-gradient(135deg,var(--g1
 <!-- HALAMAN ADMIN -->
 <section class="view" id="v-admin">
   <div id="login" class="card login tilt"><img src="logo.png" height="60" alt=""><h2>Login Admin</h2><p class="s">Khusus petugas resepsionis / admin</p>
-    <form onsubmit="login(event)"><div class="grid"><div><label>Username</label><input id="u" required></div><div><label>Password</label><input id="p" type="password" required></div></div><button class="btn" style="width:100%">Masuk</button></form></div>
+    <form onsubmit="login(event)"><div class="grid"><div><label>Username</label><input id="u" required></div><div><label>Password</label><div class="pw"><input id="p" type="password" required autocomplete="current-password"><button type="button" id="eye" onclick="lihatPw()" aria-label="Tampilkan password">👁</button></div></div></div><button class="btn" style="width:100%">Masuk</button></form></div>
 
   <div id="dash" style="display:none">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px"><div><h2>Dashboard Statistik</h2><p class="s" style="margin:0">Ringkasan kunjungan tamu</p></div>
@@ -105,16 +123,19 @@ footer{text-align:center;padding:18px;background:linear-gradient(135deg,var(--g1
         <div><label>Tampilkan</label><select id="mode" onchange="modeUI()"><option value="all">Semua Data</option><option value="day">Per Hari</option><option value="month">Per Bulan</option></select></div>
         <div id="fd" style="display:none"><label>Tanggal</label><input type="date" id="fday" onchange="render()"></div>
         <div id="fm" style="display:none"><label>Bulan</label><input type="month" id="fmon" onchange="render()"></div>
-        <div><label>Cari</label><input id="q" placeholder="Nama / instansi..." oninput="render()"></div>
+        <div><label>Cari</label><input id="q" placeholder="Nama / instansi / kode..." oninput="render()"></div>
       </div>
       <p class="s" id="cnt"></p>
-      <div class="tw"><table><thead><tr><th>Tanggal</th><th>Nama</th><th>Instansi</th><th>Keperluan</th><th>Barang</th><th>Masuk</th><th>Keluar</th><th>HP</th><th>Identitas</th><th>Aksi</th></tr></thead><tbody id="tb"></tbody></table></div>
+      <div class="tw"><table><thead><tr><th>Kode</th><th>Tanggal</th><th>Nama</th><th>Instansi</th><th>Keperluan</th><th>Barang</th><th>Masuk</th><th>Keluar</th><th>HP</th><th>Aksi</th></tr></thead><tbody id="tb"></tbody></table></div>
     </div>
   </div>
 </section>
 </main>
 
 <footer>Aplikasi Si Tamu Yonasindo ini dirancang dan dibuat oleh (Tim IT LPK YONASINDO)</footer>
+<div id="bk"><div class="tk"><div class="hd"><div class="ck">✓</div><b>DATA TAMU BERHASIL DICATAT</b><br><small>Tunjukkan layar ini kepada Security</small></div>
+<div class="bd"><div class="kode" id="tkode"></div><div class="lv" id="tlive"></div><div id="trows"></div>
+<div style="display:flex;gap:8px;margin-top:14px"><button class="btn o" style="flex:1" onclick="simpanGbr()">⬇ Simpan Gambar</button><button class="btn" style="flex:1" onclick="tutupBukti()">Selesai</button></div></div></div></div>
 <div id="toast"></div>
 
 <script>
@@ -149,19 +170,37 @@ document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{
 
 /* tamu */
 function resetForm(){$('f').reset();$('tanggal').value=today();$('masuk').value=nowT()}
+let B={},clk;
 async function kirim(e){
   e.preventDefault();
-  const j=await api({action:'add',tanggal:$('tanggal').value,nama:$('nama').value,instansi:$('instansi').value,keperluan:$('keperluan').value,
-    barang:$('bjenis').value==='Tidak Ada'?'Tidak Ada':$('bjenis').value+': '+($('bket').value||'-'),
-    masuk:$('masuk').value,keluar:$('keluar').value,hp:$('hp').value,identitas:$('identitas').value});
-  if(j.ok){toast('✔ Terima kasih, data kunjungan tersimpan');resetForm()}else toast(j.msg||'Gagal menyimpan',1);
+  const v=id=>$(id).value.trim();
+  const barang=$('bjenis').value==='Tidak Ada'?'Tidak Ada':$('bjenis').value+': '+(v('bket')||'-');
+  const f={tanggal:$('tanggal').value,nama:v('nama'),instansi:v('instansi'),keperluan:v('keperluan'),barang,masuk:$('masuk').value,keluar:$('keluar').value,hp:v('hp')};
+  const j=await api({action:'add',...f});
+  if(!j.ok)return toast(j.msg||'Gagal menyimpan',1);
+  B={kode:j.id,waktu:j.waktu,rows:[['Nama',f.nama],['Instansi',f.instansi],['Keperluan',f.keperluan],['Barang',f.barang],['Tanggal',fmt(f.tanggal)],['Jam Masuk',f.masuk],['Dicatat server',j.waktu]]};
+  $('tkode').textContent=B.kode;
+  $('trows').innerHTML=B.rows.map(r=>`<div class="rw"><span>${r[0]}</span><b>${esc(r[1])}</b></div>`).join('');
+  const tick=()=>$('tlive').textContent='● LIVE '+new Date().toLocaleTimeString('id-ID',{hour12:false});
+  tick();clearInterval(clk);clk=setInterval(tick,1000);
+  $('bk').classList.add('on');resetForm();
+}
+function tutupBukti(){$('bk').classList.remove('on');clearInterval(clk)}
+function simpanGbr(){
+  const W=640,H=300+B.rows.length*44,c=document.createElement('canvas'),x=c.getContext('2d');c.width=W;c.height=H;
+  x.fillStyle='#fff';x.fillRect(0,0,W,H);x.fillStyle='#0e8a2e';x.fillRect(0,0,W,110);
+  x.fillStyle='#fff';x.textAlign='center';x.font='bold 28px sans-serif';x.fillText('BUKTI KUNJUNGAN TAMU',W/2,50);x.font='18px sans-serif';x.fillText('PT. Yonasindo Intra Pratama',W/2,82);
+  x.fillStyle='#055a05';x.font='bold 48px monospace';x.fillText(B.kode,W/2,180);
+  B.rows.forEach((r,i)=>{const y=235+i*44;x.font='16px sans-serif';x.textAlign='left';x.fillStyle='#5b7562';x.fillText(r[0],30,y);x.textAlign='right';x.fillStyle='#0f2a16';x.font='bold 17px sans-serif';x.fillText(String(r[1]).slice(0,38),W-30,y)});
+  const a=document.createElement('a');a.download='bukti-tamu-'+B.kode+'.png';a.href=c.toDataURL('image/png');a.click();
 }
 
+function lihatPw(){const i=$('p'),s=i.type==='password';i.type=s?'text':'password';$('eye').textContent=s?'🙈':'👁'}
 /* admin */
 async function login(e){
   e.preventDefault();
   const j=await api({action:'login',user:$('u').value,pass:$('p').value});
-  if(j.ok){TOKEN=j.token;sessionStorage.setItem('tk',TOKEN);$('p').value='';muat()}else toast(j.msg||'Login gagal',1);
+  if(j.ok){TOKEN=j.token;sessionStorage.setItem('tk',TOKEN);$('p').value='';$('p').type='password';$('eye').textContent='👁';muat()}else toast(j.msg||'Login gagal',1);
 }
 function logout(silent){TOKEN='';sessionStorage.removeItem('tk');$('dash').style.display='none';$('login').style.display='block';if(silent!==true)toast('Anda telah keluar')}
 async function muat(){
@@ -183,11 +222,9 @@ function modeUI(){const m=$('mode').value;$('fd').style.display=m==='day'?'block
   if(m==='day'&&!$('fday').value)$('fday').value=today();if(m==='month'&&!$('fmon').value)$('fmon').value=today().slice(0,7);render()}
 function render(){
   const m=$('mode').value,q=$('q').value.toLowerCase();
-  const L=DATA.filter(d=>(m==='all'||(m==='day'?d.tanggal===$('fday').value:d.tanggal.startsWith($('fmon').value)))&&(!q||(d.nama+' '+d.instansi).toLowerCase().includes(q)));
+  const L=DATA.filter(d=>(m==='all'||(m==='day'?d.tanggal===$('fday').value:d.tanggal.startsWith($('fmon').value)))&&(!q||(d.nama+' '+d.instansi+' '+d.id).toLowerCase().includes(q)));
   $('cnt').textContent=L.length+' data ditampilkan';
-  $('tb').innerHTML=L.length?L.map(d=>`<tr><td>${fmt(d.tanggal)}</td><td><b>${esc(d.nama)}</b></td><td>${esc(d.instansi)}</td><td>${esc(d.keperluan)}</td><td>${esc(d.barang)}</td><td>${esc(d.masuk)}</td>
-  <td>${d.keluar?esc(d.keluar):`<span class="in">Di dalam</span> <button class="btn o sm" onclick="keluar('${esc(d.id)}')">Set keluar</button>`}</td><td>${esc(d.hp)}</td><td>${esc(d.identitas)}</td>
-  <td><button class="btn r" onclick="hapus('${esc(d.id)}')">Hapus</button></td></tr>`).join(''):'<tr><td colspan="10" style="text-align:center;padding:24px;color:#5b7562">Belum ada data</td></tr>';
+  $('tb').innerHTML=L.length?L.map(d=>`<tr><td data-l="Kode"><b>${esc(d.id)}</b></td><td data-l="Tanggal">${fmt(d.tanggal)}</td><td data-l="Nama"><b>${esc(d.nama)}</b></td><td data-l="Instansi">${esc(d.instansi)}</td><td data-l="Keperluan">${esc(d.keperluan)}</td><td data-l="Barang">${esc(d.barang)}</td><td data-l="Masuk">${esc(d.masuk)}</td><td data-l="Keluar">${d.keluar?esc(d.keluar):`<span class="in">Di dalam</span> <button class="btn o sm" onclick="keluar('${esc(d.id)}')">Set keluar</button>`}</td><td data-l="HP">${esc(d.hp)}</td><td data-l="Aksi"><button class="btn r" onclick="hapus('${esc(d.id)}')">Hapus</button></td></tr>`).join(''):'<tr><td colspan="10" style="text-align:center;padding:24px;color:#5b7562">Belum ada data</td></tr>';
 }
 async function hapus(id){if(!confirm('Hapus data tamu ini?'))return;const j=await api({action:'delete',id});if(j.ok){toast('Data dihapus');muat()}else toast(j.msg,1)}
 async function keluar(id){const j=await api({action:'keluar',id,jam:nowT()});if(j.ok){toast('Jam keluar dicatat');muat()}else toast(j.msg,1)}
