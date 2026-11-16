@@ -113,7 +113,7 @@ td{border:0;display:flex;justify-content:space-between;align-items:center;gap:12
 
   <div id="dash" style="display:none">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px"><div><h2>Dashboard Statistik</h2><p class="s" style="margin:0">Ringkasan kunjungan tamu</p></div>
-      <div><button class="btn o sm" onclick="muat()">⟳ Muat Ulang</button> <button class="btn r" onclick="logout()">Keluar</button></div></div>
+      <div><button class="btn o sm" onclick="muat()">⟳ Muat Ulang</button> <button class="btn r" onclick="logout()">Logout</button></div></div>
     <div class="stats">
       <div class="st tilt"><b id="s1">0</b><span>Total Tamu</span></div><div class="st tilt"><b id="s2">0</b><span>Tamu Hari Ini</span></div>
       <div class="st tilt"><b id="s3">0</b><span>Tamu Bulan Ini</span></div><div class="st tilt"><b id="s4">0</b><span>Masih di Dalam</span></div></div>
@@ -162,11 +162,14 @@ async function api(body){
 }
 
 /* navigasi */
-document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{
-  document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x===b));
-  document.querySelectorAll('.view').forEach(v=>v.classList.toggle('on',v.id==='v-'+b.dataset.v));
-  if(b.dataset.v==='admin'&&TOKEN)muat();
-});
+function go(v){
+  if(TOKEN&&v==='tamu')v='admin'; /* admin yang sedang login tidak boleh ke buku tamu */
+  document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x.dataset.v===v));
+  document.querySelectorAll('.view').forEach(x=>x.classList.toggle('on',x.id==='v-'+v));
+  document.querySelector('.tab[data-v=tamu]').style.display=TOKEN?'none':'';
+  if(v==='admin'&&TOKEN)muat();
+}
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>go(b.dataset.v));
 
 /* tamu */
 function resetForm(){$('f').reset();$('tanggal').value=today();$('masuk').value=nowT()}
@@ -200,9 +203,9 @@ function lihatPw(){const i=$('p'),s=i.type==='password';i.type=s?'text':'passwor
 async function login(e){
   e.preventDefault();
   const j=await api({action:'login',user:$('u').value,pass:$('p').value});
-  if(j.ok){TOKEN=j.token;sessionStorage.setItem('tk',TOKEN);$('p').value='';$('p').type='password';$('eye').textContent='👁';muat()}else toast(j.msg||'Login gagal',1);
+  if(j.ok){TOKEN=j.token;sessionStorage.setItem('tk',TOKEN);$('p').value='';$('p').type='password';$('eye').textContent='👁';go('admin')}else toast(j.msg||'Login gagal',1);
 }
-function logout(silent){TOKEN='';sessionStorage.removeItem('tk');$('dash').style.display='none';$('login').style.display='block';if(silent!==true)toast('Anda telah keluar')}
+function logout(silent){TOKEN='';sessionStorage.removeItem('tk');$('dash').style.display='none';$('login').style.display='block';DATA=[];go('tamu');if(silent!==true)toast('Anda telah keluar')}
 async function muat(){
   const j=await api({action:'list'});
   if(!j.ok){if(j.auth!==false)toast(j.msg,1);return}
@@ -240,7 +243,7 @@ document.addEventListener('mousemove',e=>{
 });
 
 resetForm();
-if(TOKEN){/* sesi lama akan dimuat saat tab Admin dibuka */}
+if(TOKEN)go('admin');
 window.addEventListener('load',()=>setTimeout(()=>loading(false),1200));
 </script>
 </body>
